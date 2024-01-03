@@ -1,0 +1,52 @@
+from turtle import * #Turtle is graphics library for drawings and animations.
+import turtle
+import time         #Time is module for time related function.
+import math         #A Module providing mathematical function.
+
+ws = turtle.Screen()    # turtle screen object.
+ws.bgcolor("black")
+ws.setup(width=500, height=500)
+ws.tracer(0)            # Turns off animation and improves performance.
+tur = turtle.Turtle()   # turtle Drawing object.
+tur.hideturtle()        # Hides the turtle cursor.
+tur.speed(0)            # Fastest Drawing speed.
+tur.pensize(3)          # 3pixel pen size.
+def draw_clock(hour, min, second, tur):    # Draws Clock based on current time. 
+    tur.up()            # LIft the pen and turtle dont draw while moving
+    tur.goto(0, 210)        # Moving the turtle to the starting point for drawing the outer circle.
+    tur.setheading(180)     # Sets the direction of turtle to west (180 degrees ) 
+    tur.color("red")        # pen colour is red
+    tur.pendown()           # Puts the pen down and draw while moving
+    tur.circle(210)         # draws a circle with a radius of 210 units.    
+    tur.up() 
+    tur.goto(0, 0)          # Moves the circle to the Center
+    tur.setheading(90)      # sets the direction North
+    for _ in range(12):     # Loops thorugh 12 times for 12 hours
+        tur.fd(190)         # moves the turtle forward to draw a tick.  
+        tur.pendown()       # Put the pen down to draw a tick. 
+        tur.fd(20)          # Draw the tick.
+        tur.penup()         # Lifts the pen to move back to the center without drawing.
+        tur.goto(0, 0)      # Moves back to the center
+        tur.rt(30)          # Rotates the turtle for 30 degrees for next tick. 
+   
+    clockhands = [("yellow", 100, 12), ("green", 155, 60), ("blue", 125, 60)]  # List of tuples with color length and time (hh:mm:ss)
+    timeset = (hour, min, second)
+    for hand in clockhands:  # Loops through each clock hand specified in "clockhands"
+        timepart = timeset[clockhands.index(hand)] 
+        angle = (float(timepart) / hand[2])*360  # Calculates the angle using formula
+        tur.penup()         # LIft the pen and turtle dont draw while moving
+        tur.goto(0, 0)      # Moves the turtle to the center of the clock (0, 0). This is where the clock hands originate from.
+        tur.color(hand[0])  # represents the colour of hand
+        tur.setheading(90)  # This points hand starts pointing upword s from the center.
+        tur.rt(angle)       # Rotates the hand based on the angle which is calculated on current time.
+        tur.pendown()       # Puts the pen down and draw while moving
+        tur.fd(hand[1])     # this draws the hands of specific length. 
+while True:                 # Continously update the clock time
+    hour = int(time.strftime("%I")) # Time module Retrieves current time in hh:mm:ss  
+    min = int(time.strftime("%M"))
+    second = int(time.strftime("%S"))
+    draw_clock(hour, min, second, tur) #Calls the function with current time
+    ws.update()                        #Update the turtule screen 
+    time.sleep(1) 
+    tur.clear()                        # Clears the old changes before updating.
+#window.mainloop() it is used in GUI application but not needed in console.
